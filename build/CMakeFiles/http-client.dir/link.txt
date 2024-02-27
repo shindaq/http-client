@@ -1,2 +1,0 @@
-/usr/bin/ar qc libhttp-client.a "CMakeFiles/http-client.dir/include/client/client.cpp.o" "CMakeFiles/http-client.dir/include/curlpp/curl_easy.cpp.o"
-/usr/bin/ranlib libhttp-client.a
