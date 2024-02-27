@@ -1,0 +1,14 @@
+# Target labels
+ json-populate
+# Source files and their labels
+/home/shindaq/mirea/projects/http-client/build/_deps/json-subbuild/CMakeFiles/json-populate
+/home/shindaq/mirea/projects/http-client/build/_deps/json-subbuild/CMakeFiles/json-populate.rule
+/home/shindaq/mirea/projects/http-client/build/_deps/json-subbuild/CMakeFiles/json-populate-complete.rule
+/home/shindaq/mirea/projects/http-client/build/_deps/json-subbuild/json-populate-prefix/src/json-populate-stamp/json-populate-build.rule
+/home/shindaq/mirea/projects/http-client/build/_deps/json-subbuild/json-populate-prefix/src/json-populate-stamp/json-populate-configure.rule
+/home/shindaq/mirea/projects/http-client/build/_deps/json-subbuild/json-populate-prefix/src/json-populate-stamp/json-populate-download.rule
+/home/shindaq/mirea/projects/http-client/build/_deps/json-subbuild/json-populate-prefix/src/json-populate-stamp/json-populate-install.rule
+/home/shindaq/mirea/projects/http-client/build/_deps/json-subbuild/json-populate-prefix/src/json-populate-stamp/json-populate-mkdir.rule
+/home/shindaq/mirea/projects/http-client/build/_deps/json-subbuild/json-populate-prefix/src/json-populate-stamp/json-populate-patch.rule
+/home/shindaq/mirea/projects/http-client/build/_deps/json-subbuild/json-populate-prefix/src/json-populate-stamp/json-populate-test.rule
+/home/shindaq/mirea/projects/http-client/build/_deps/json-subbuild/json-populate-prefix/src/json-populate-stamp/json-populate-update.rule
