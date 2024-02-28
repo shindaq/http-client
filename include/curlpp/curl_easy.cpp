@@ -1,4 +1,5 @@
 #include "curl_easy.hpp"
+#include "curlpp_exceptions.hpp"
 #include <curl/curl.h>
 #include <curl/easy.h>
 #include <iostream>
@@ -11,7 +12,12 @@ CurlPPEasy::CurlPPEasy()
     : _curl(std::unique_ptr<CURL, decltype(&curl_easy_cleanup)>(
           curl_easy_init(), curl_easy_cleanup)),
       _slist(std::unique_ptr<curl_slist, decltype(&curl_slist_free_all)>(
-          nullptr, curl_slist_free_all)) {}
+          nullptr, curl_slist_free_all)) {
+  if (!_curl) {
+    throw exceptions::CurlException(
+        exceptions::CurlExceptionTypes::kCurlInitFailure);
+  }
+}
 
 CurlPPEasy &CurlPPEasy::Post() & {
   curl_easy_setopt(_curl.get(), CURLOPT_POST, 1L);
@@ -50,15 +56,23 @@ CurlPPEasy &CurlPPEasy::SetUserAgent(const std::string &agent) & {
   return *this;
 }
 CurlPPEasy &CurlPPEasy::SetHeaders(const std::vector<std::string> &headers) & {
-  curl_slist *list = _slist.get();
+  curl_slist *slist = _slist.release();
+  curl_slist *temp_slist_item = nullptr;
   for (const auto &header : headers) {
-    list = curl_slist_append(list, header.c_str());
+    temp_slist_item = curl_slist_append(slist, header.c_str());
+    if (!temp_slist_item) {
+      curl_slist_free_all(slist);
+      throw exceptions::CurlException(
+          exceptions::CurlExceptionTypes::kCurlSlistAppendFailure);
+    }
+    slist = temp_slist_item;
   }
-  curl_easy_setopt(_curl.get(), CURLOPT_HTTPHEADER, list);
+  curl_easy_setopt(_curl.get(), CURLOPT_HTTPHEADER, slist);
+  _slist.reset(slist);
   return *this;
 }
 
-CurlPPEasy &CurlPPEasy::Verbose() & {
+CurlPPEasy &CurlPPEasy::Verbose()  & {
   curl_easy_setopt(_curl.get(), CURLOPT_VERBOSE, 1);
   return *this;
 }
