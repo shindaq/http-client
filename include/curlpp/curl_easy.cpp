@@ -8,9 +8,7 @@
 
 namespace curlpp {
 
-CurlPPEasy::CurlPPEasy()
-    : _curl(std::unique_ptr<CURL, decltype(&curl_easy_cleanup)>(
-          curl_easy_init(), curl_easy_cleanup)) {
+CurlPPEasy::CurlPPEasy() : _curl(Curl(curl_easy_init(), curl_easy_cleanup)) {
   if (!_curl) {
     throw exceptions::CurlEasyInitException();
   }
@@ -49,8 +47,7 @@ CurlPPEasy::SetSlistOption(const std::vector<std::string> &string_vector,
   if (res_code != CURLcode::CURLE_OK) {
     throw exceptions::CurlSetOptException(option_name);
   }
-  std::unique_ptr<curl_slist, decltype(&curl_slist_free_all)> slist(
-      raw_slist, curl_slist_free_all);
+  SList slist(raw_slist, curl_slist_free_all);
   _slists.push_back(std::move(slist));
   return *this;
 }

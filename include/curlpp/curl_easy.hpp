@@ -7,6 +7,9 @@
 
 namespace curlpp {
 
+using Curl = std::unique_ptr<CURL, decltype(&curl_easy_cleanup)>;
+using SList = std::unique_ptr<curl_slist, decltype(&curl_slist_free_all)>;
+
 class CurlPPEasy final {
 public:
   CurlPPEasy();
@@ -28,8 +31,7 @@ public:
   CurlPPEasy &LibcurlOption(Option option, Value value) &;
 
 private:
-  std::unique_ptr<CURL, decltype(&curl_easy_cleanup)> _curl;
-  std::vector<std::unique_ptr<curl_slist, decltype(&curl_slist_free_all)>>
-      _slists;
+  Curl _curl;
+  std::vector<SList> _slists;
 };
 } // namespace curlpp
