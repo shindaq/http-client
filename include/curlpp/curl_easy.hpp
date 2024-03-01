@@ -11,30 +11,25 @@ class CurlPPEasy final {
 public:
   CurlPPEasy();
 
-  CurlPPEasy &Post() &;
-
-  CurlPPEasy &Get() &;
-
-  CurlPPEasy &Put() &;
-
-  CurlPPEasy &Patch() &;
-
-  CurlPPEasy &Delete() &;
-
-  CurlPPEasy &CustomMethod(const std::string &) &;
+  CurlPPEasy &SetMethod(const std::string &) &;
 
   CurlPPEasy &SetUrl(const std::string &) &;
 
   CurlPPEasy &SetUserAgent(const std::string &) &;
 
-  CurlPPEasy &SetHeaders(const std::vector<std::string> &) &;
+  CurlPPEasy &SetSlistOption(const std::vector<std::string> &, CURLoption,
+                             const std::string &) &;
 
   CurlPPEasy &Verbose() &;
 
   CURLcode Perform() &;
 
+  template <typename Option, typename Value>
+  CurlPPEasy &LibcurlOption(Option option, Value value) &;
+
 private:
   std::unique_ptr<CURL, decltype(&curl_easy_cleanup)> _curl;
-  std::unique_ptr<curl_slist, decltype(&curl_slist_free_all)> _slist;
+  std::vector<std::unique_ptr<curl_slist, decltype(&curl_slist_free_all)>>
+      _slists;
 };
 } // namespace curlpp

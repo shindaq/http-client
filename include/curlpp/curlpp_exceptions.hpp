@@ -1,24 +1,25 @@
 #pragma once
 
 #include <exception>
+#include <stdexcept>
+#include <string>
 
 namespace curlpp::exceptions {
 
-enum class CurlExceptionTypes { kCurlInitFailure, kCurlSlistAppendFailure };
+struct CurlEasyInitException final : public std::runtime_error {
+  CurlEasyInitException()
+      : std::runtime_error(
+            "Failed to initialize a libcurl curl_easy instance") {}
+};
 
-class CurlException final : public std::exception {
-public:
-  explicit CurlException(CurlExceptionTypes type) : _type(type){};
-  const char *what() const noexcept override {
-    switch (_type) {
-    case CurlExceptionTypes::kCurlInitFailure:
-      return "Failed to initialize a libcurl CURL* instance";
-    case CurlExceptionTypes::kCurlSlistAppendFailure:
-      return "Failed to allocate libcurl curl_slist node";
-    }
-  }
+struct CurlSlistAppendException final : public std::runtime_error {
+  CurlSlistAppendException()
+      : std::runtime_error("Failed to allocate libcurl curl_slist node") {}
+};
 
-private:
-  CurlExceptionTypes _type;
+struct CurlSetOptException final : public std::runtime_error {
+  CurlSetOptException(const std::string &option)
+      : std::runtime_error("Failed to set curl_easy_setopt() option: " +
+                           option) {}
 };
 } // namespace curlpp::exceptions
